@@ -1,0 +1,23 @@
+&	+
+(.+)'	$1//
+As Boolean	As bool
+As Integer	As int
+As Long	As long
+As Single	As short
+As String	As string
+Case	case
+Const	const
+End Function	}
+End If	}
+End Select	}
+End Sub	}
+Exit Function	return
+Exit Sub	return
+False	false
+For	for
+Private	private
+Public	public
+Select Case	switch
+True	true
+^'	///
+^(.+) Sub (.+[)])$	$1 void $2 {
