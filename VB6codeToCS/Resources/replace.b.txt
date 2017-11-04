@@ -20,9 +20,6 @@ End With
 Exit Do	break
 Exit Function	return
 Exit Sub	return
-False	false
-For	for
-If	if
 If[\s]+((?![(]).*)[\s]+Then$	If ($1) {
 If[\s]+((?![(]).*)[\s]+Then(.+)	If ($1) { $2; }
 Loop While	} while
@@ -30,7 +27,10 @@ Private	private
 Public	public
 Select Case (.+)	switch ($1) {
 Then$	{@@@@@@@@
-True	true
+\bFalse\b	false
+\bFor\b	for
+\bIf\b	if
+\bTrue\b	true
 ^'	///
 ^(.*)Sub (.+[)])$	$1void $2 {
 ^(.*)Type (.+)$	$1class $2 {

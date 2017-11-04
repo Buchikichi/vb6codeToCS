@@ -56,6 +56,7 @@ namespace VB6codeToCS.Converter
                 }
                 statement.Add(line.TrimEnd());
             }
+            statement.EndLoad();
             return statement;
         }
         #endregion

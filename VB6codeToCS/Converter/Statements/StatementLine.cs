@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
 namespace VB6codeToCS.Converter.Statements
@@ -10,7 +9,7 @@ namespace VB6codeToCS.Converter.Statements
         private StatementLine parent;
         private StatementLine currentChild;
         private bool continues;
-        protected List<StatementLine> Children = new List<StatementLine>();
+        public readonly List<StatementLine> Children = new List<StatementLine>();
         public readonly List<SingleLine> Lines = new List<SingleLine>();
 
         protected virtual bool IsEnd(string line)
@@ -25,6 +24,7 @@ namespace VB6codeToCS.Converter.Statements
         public virtual void AddLine(SingleLine singleLine)
         {
             Lines.Add(singleLine);
+            continues = singleLine.Statement.EndsWith("_");
         }
 
         public void Add(string line)
@@ -33,19 +33,19 @@ namespace VB6codeToCS.Converter.Statements
             {
                 var child = StatementFactory.Create(line);
 
-                Debug.WriteLine($"Create:{depth}[{line}]");
+                //Debug.WriteLine($"Create:{depth}[{line}]");
                 Children.Add(child);
                 if (child is ControlStatement)
                 {
                     currentChild = child;
                     currentChild.depth = depth + 1;
                     currentChild.parent = this;
-                    Debug.WriteLine($"ControlStatement:{currentChild.depth}");
+                    //Debug.WriteLine($"ControlStatement:{currentChild.depth}");
                 }
             }
             else if (continues)
             {
-                Lines.Add(new SingleLine(line));
+                AddLine(new SingleLine(line));
             }
             else
             {
@@ -56,12 +56,10 @@ namespace VB6codeToCS.Converter.Statements
                     currentChild = null;
                 }
             }
-            continues = line.EndsWith("_");
         }
 
         public override string ToString()
         {
-            var buff = new StringBuilder();
             SingleLine last = null;
 
             foreach (var line in Lines)
@@ -70,8 +68,7 @@ namespace VB6codeToCS.Converter.Statements
                 last = line;
             }
             last.Terminate = true;
-            buff.Append(string.Join("\r\n", Lines));
-            return buff.ToString();
+            return string.Join("\r\n", Lines);
         }
 
         public List<StatementLine> ListStatements()
@@ -135,10 +132,12 @@ namespace VB6codeToCS.Converter.Statements
             {
                 Statement = line;
             }
+            Continues = Statement.EndsWith(" _");
         }
 
         #region Members
         private string comment;
+        private bool Continues { get; }
         public virtual bool Terminate { get; set; }
         public string Statement { get; set; }
         public bool TerminatedStatement
@@ -149,7 +148,7 @@ namespace VB6codeToCS.Converter.Statements
                 {
                     return true;
                 }
-                return Statement.EndsWith("{") || Statement.EndsWith("}");
+                return Continues || Statement.EndsWith("{") || Statement.EndsWith("}");
             }
         }
         #endregion

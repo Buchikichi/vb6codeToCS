@@ -8,8 +8,8 @@ namespace VB6codeToCS.Converter.Statements
     {
         private static Dictionary<string, Type> dict = new Dictionary<string, Type>()
         {
-            {"[\\s]*Sub ", typeof(SubStatement)},
-            {"[\\s]*Function ", typeof(SubStatement)},
+            {"^(?!.*Declare).*(?=Sub ).*$", typeof(SubStatement)},
+            {"^(?!.*Declare).*(?=Function ).*$", typeof(SubStatement)},
             {"[\\s]*With ", typeof(WithStatement)}
         };
 
