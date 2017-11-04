@@ -47,7 +47,11 @@
   <ItemGroup>
     <Compile Include="Converter\Statements\ControlStatement.cs" />
     <Compile Include="Converter\Replacer.cs" />
+    <Compile Include="Converter\Statements\ClassStatement.cs" />
+    <Compile Include="Converter\Statements\SubStatement.cs" />
+    <Compile Include="Converter\Statements\StatementFactory.cs" />
     <Compile Include="Converter\Statements\StatementLine.cs" />
+    <Compile Include="Converter\Statements\WithStatement.cs" />
     <Compile Include="Converter\Vb6csConverter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

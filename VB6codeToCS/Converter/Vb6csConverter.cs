@@ -10,7 +10,6 @@ namespace VB6codeToCS.Converter
     {
         private const string Indent = "        ";
         private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option", "^[\\s]*On Error" };
-        private readonly string[] Controls = { "[\\s]+If.+", "[\\s]+Case.+" };
 
         #region Load
         private bool Exclude(string line)
@@ -28,27 +27,11 @@ namespace VB6codeToCS.Converter
             return exclude;
         }
 
-        private bool IsControl(string line)
+        private StatementLine Load(string filename)
         {
-            bool isControl = false;
-
-            foreach (var pattern in Controls)
-            {
-                if (Regex.IsMatch(line, pattern))
-                {
-                    isControl = true;
-                    break;
-                }
-            }
-            return isControl;
-        }
-
-        private List<StatementLine> Load(string filename)
-        {
-            var resultList = new List<StatementLine>();
             var begin = 0;
             var lines = File.ReadAllLines(filename, Encoding.GetEncoding("Shift_JIS"));
-            StatementLine currentLine = null;
+            var statement = new ClassStatement();
 
             foreach (var line in lines)
             {
@@ -71,48 +54,33 @@ namespace VB6codeToCS.Converter
                 {
                     continue;
                 }
-                if (!line.EndsWith("_"))
-                {
-                    if (IsControl(line))
-                    {
-                        currentLine = new ControlStatement();
-                    }
-                    else
-                    {
-                        currentLine = new StatementLine();
-                    }
-                    resultList.Add(currentLine);
-                }
-                if (currentLine != null)
-                {
-                    currentLine.Add(line.TrimEnd());
-                }
+                statement.Add(line.TrimEnd());
             }
-            return resultList;
+            return statement;
         }
         #endregion
 
         #region Replace
-        private void Prepare(List<StatementLine> lines)
+        private void Prepare(StatementLine statement)
         {
             var replacer = new Replacer("replace.b.txt");
 
-            foreach (var statementLine in lines)
+            foreach (var stmt in statement.ListStatements())
             {
-                foreach (var line in statementLine.Lines)
+                foreach (var line in stmt.Lines)
                 {
                     line.Statement = replacer.Replace(line.Statement);
                 }
             }
         }
 
-        private void Finish(List<StatementLine> lines)
+        private void Finish(StatementLine statement)
         {
             var replacer = new Replacer("replace.c.txt");
 
-            foreach (var statementLine in lines)
+            foreach (var stmt in statement.ListStatements())
             {
-                foreach (var line in statementLine.Lines)
+                foreach (var line in stmt.Lines)
                 {
                     line.Statement = replacer.Replace(line.Statement);
                 }
@@ -121,13 +89,13 @@ namespace VB6codeToCS.Converter
         #endregion
 
         #region Convert
-        private void Save(string name, List<StatementLine> lines)
+        private void Save(string name, StatementLine statement)
         {
             var contents = new List<string>();
 
-            foreach (var statementLine in lines)
+            foreach (var stmt in statement.ListStatements())
             {
-                var line = statementLine.ToString();
+                var line = stmt.ToString();
 
                 if (!string.IsNullOrWhiteSpace(line))
                 {

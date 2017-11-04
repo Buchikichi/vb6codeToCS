@@ -7,7 +7,7 @@ As Long	As long
 As Single	As short
 As String	As string
 Case	case
-Case Else	default:
+Case Else	default
 Const	const
 Else	} else {
 ElseIf	} else if
@@ -16,18 +16,23 @@ End If	}
 End Select	}
 End Sub	}
 End Type	}
+End With
 Exit Do	break
 Exit Function	return
 Exit Sub	return
 False	false
 For	for
 If	if
+If[\s]+((?![(]).*)[\s]+Then$	If ($1) {
+If[\s]+((?![(]).*)[\s]+Then(.+)	If ($1) { $2; }
+Loop While	} while
 Private	private
 Public	public
 Select Case (.+)	switch ($1) {
-Then$	{
+Then$	{@@@@@@@@
 True	true
 ^'	///
 ^(.*)Sub (.+[)])$	$1void $2 {
 ^(.*)Type (.+)$	$1class $2 {
+^([\s]+)Do$	$1do {
 ^([\s]+)Next.*	$1}

@@ -1,19 +1,67 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace VB6codeToCS.Converter.Statements
 {
     class StatementLine
     {
+        private int depth;
+        private StatementLine parent;
+        private StatementLine currentChild;
+        private bool continues;
+        protected List<StatementLine> Children = new List<StatementLine>();
         public readonly List<SingleLine> Lines = new List<SingleLine>();
+
+        protected virtual bool IsEnd(string line)
+        {
+            return false;
+        }
+
+        protected virtual void End()
+        {
+        }
+
+        public virtual void AddLine(SingleLine singleLine)
+        {
+            Lines.Add(singleLine);
+        }
 
         public void Add(string line)
         {
-            Lines.Add(new SingleLine(line));
+            if (currentChild == null)
+            {
+                var child = StatementFactory.Create(line);
+
+                Debug.WriteLine($"Create:{depth}[{line}]");
+                Children.Add(child);
+                if (child is ControlStatement)
+                {
+                    currentChild = child;
+                    currentChild.depth = depth + 1;
+                    currentChild.parent = this;
+                    Debug.WriteLine($"ControlStatement:{currentChild.depth}");
+                }
+            }
+            else if (continues)
+            {
+                Lines.Add(new SingleLine(line));
+            }
+            else
+            {
+                currentChild.Add(line);
+                if (currentChild.IsEnd(line))
+                {
+                    currentChild.End();
+                    currentChild = null;
+                }
+            }
+            continues = line.EndsWith("_");
         }
 
         public override string ToString()
         {
+            var buff = new StringBuilder();
             SingleLine last = null;
 
             foreach (var line in Lines)
@@ -22,7 +70,21 @@ namespace VB6codeToCS.Converter.Statements
                 last = line;
             }
             last.Terminate = true;
-            return string.Join("\r\n", Lines);
+            buff.Append(string.Join("\r\n", Lines));
+            return buff.ToString();
+        }
+
+        public List<StatementLine> ListStatements()
+        {
+            var list = new List<StatementLine>
+            {
+                this
+            };
+            foreach (var child in Children)
+            {
+                list.AddRange(child.ListStatements());
+            }
+            return list;
         }
     }
 
