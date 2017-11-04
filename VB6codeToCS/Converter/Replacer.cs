@@ -33,7 +33,15 @@ namespace VB6codeToCS.Converter
                     var line = reader.ReadLine();
                     var elements = line.Split('\t');
 
-                    if (2 <= elements.Length)
+                    if (elements.Length == 1)
+                    {
+                        list.Add(new ReplacePattern()
+                        {
+                            Pattern = elements[0],
+                            Replacement = string.Empty,
+                        });
+                    }
+                    else if (2 <= elements.Length)
                     {
                         list.Add(new ReplacePattern()
                         {

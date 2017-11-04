@@ -1,23 +1,33 @@
-&	+
-(.+)'	$1//
+ & 	 + 
+ \\ 	 / 
 As Boolean	As bool
+As Byte	As byte
 As Integer	As int
 As Long	As long
 As Single	As short
 As String	As string
 Case	case
+Case Else	default:
 Const	const
+Else	} else {
+ElseIf	} else if
 End Function	}
 End If	}
 End Select	}
 End Sub	}
+End Type	}
+Exit Do	break
 Exit Function	return
 Exit Sub	return
 False	false
 For	for
+If	if
 Private	private
 Public	public
-Select Case	switch
+Select Case (.+)	switch ($1) {
+Then$	{
 True	true
 ^'	///
-^(.+) Sub (.+[)])$	$1 void $2 {
+^(.*)Sub (.+[)])$	$1void $2 {
+^(.*)Type (.+)$	$1class $2 {
+^([\s]+)Next.*	$1}

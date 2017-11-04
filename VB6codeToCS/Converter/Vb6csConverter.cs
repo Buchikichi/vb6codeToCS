@@ -2,13 +2,15 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using VB6codeToCS.Converter.Statements;
 
 namespace VB6codeToCS.Converter
 {
     class Vb6csConverter
     {
         private const string Indent = "        ";
-        private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option" };
+        private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option", "^[\\s]*On Error" };
+        private readonly string[] Controls = { "[\\s]+If.+", "[\\s]+Case.+" };
 
         #region Load
         private bool Exclude(string line)
@@ -26,12 +28,26 @@ namespace VB6codeToCS.Converter
             return exclude;
         }
 
+        private bool IsControl(string line)
+        {
+            bool isControl = false;
+
+            foreach (var pattern in Controls)
+            {
+                if (Regex.IsMatch(line, pattern))
+                {
+                    isControl = true;
+                    break;
+                }
+            }
+            return isControl;
+        }
+
         private List<StatementLine> Load(string filename)
         {
             var resultList = new List<StatementLine>();
             var begin = 0;
             var lines = File.ReadAllLines(filename, Encoding.GetEncoding("Shift_JIS"));
-            var replacer = new Replacer("replace.b.txt");
             StatementLine currentLine = null;
 
             foreach (var line in lines)
@@ -57,52 +73,67 @@ namespace VB6codeToCS.Converter
                 }
                 if (!line.EndsWith("_"))
                 {
-                    currentLine = new StatementLine();
+                    if (IsControl(line))
+                    {
+                        currentLine = new ControlStatement();
+                    }
+                    else
+                    {
+                        currentLine = new StatementLine();
+                    }
                     resultList.Add(currentLine);
                 }
                 if (currentLine != null)
                 {
-                    var replaced = replacer.Replace(line.TrimEnd());
-
-                    currentLine.Add(replaced);
+                    currentLine.Add(line.TrimEnd());
                 }
             }
             return resultList;
         }
         #endregion
 
-        #region Finish
+        #region Replace
+        private void Prepare(List<StatementLine> lines)
+        {
+            var replacer = new Replacer("replace.b.txt");
+
+            foreach (var statementLine in lines)
+            {
+                foreach (var line in statementLine.Lines)
+                {
+                    line.Statement = replacer.Replace(line.Statement);
+                }
+            }
+        }
+
         private void Finish(List<StatementLine> lines)
         {
             var replacer = new Replacer("replace.c.txt");
 
             foreach (var statementLine in lines)
             {
-                var oldLines = new List<string>();
-
-                oldLines.AddRange(statementLine.Lines);
-                statementLine.Lines.Clear();
-                foreach (var line in oldLines)
+                foreach (var line in statementLine.Lines)
                 {
-                    var replaced = replacer.Replace(line);
-
-                    if (!string.IsNullOrWhiteSpace(replaced))
-                    {
-                        replaced = Indent + replaced;
-                    }
-                    statementLine.Lines.Add(replaced);
+                    line.Statement = replacer.Replace(line.Statement);
                 }
             }
         }
         #endregion
 
+        #region Convert
         private void Save(string name, List<StatementLine> lines)
         {
             var contents = new List<string>();
 
             foreach (var statementLine in lines)
             {
-                contents.AddRange(statementLine.Lines);
+                var line = statementLine.ToString();
+
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    line = Indent + line;
+                }
+                contents.Add(line);
             }
             File.WriteAllLines(name, contents);
         }
@@ -112,20 +143,10 @@ namespace VB6codeToCS.Converter
             var lines = Load(filename);
             var newName = filename + ".cs";
 
+            Prepare(lines);
             Finish(lines);
             Save(newName, lines);
         }
-    }
-
-    class StatementLine
-    {
-        public void Add(string line)
-        {
-            Lines.Add(line);
-        }
-
-        #region Properties
-        public List<string> Lines { get; set; } = new List<string>();
         #endregion
     }
 }

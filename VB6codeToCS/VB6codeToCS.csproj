@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter\Statements\ControlStatement.cs" />
     <Compile Include="Converter\Replacer.cs" />
+    <Compile Include="Converter\Statements\StatementLine.cs" />
     <Compile Include="Converter\Vb6csConverter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
