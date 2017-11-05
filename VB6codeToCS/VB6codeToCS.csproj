@@ -92,5 +92,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\replace.b.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\replace.a.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

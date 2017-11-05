@@ -1,38 +1,32 @@
- & 	 + 
- \\ 	 / 
-As Boolean	As bool
-As Byte	As byte
-As Integer	As int
-As Long	As long
-As Single	As short
-As String	As string
-Case	case
+(.*)Function (.+[(].*[)]) As ([A-Za-z]+)$	$1 $3 $2 {
+(.*)Function (.+[(].*[)])$	$1Empty $2 {
 Case Else	default
-Const	const
+Const\s+([A-Za-z0-9_]+)\s+=\s+(".*")$	const string $1 = $2
+Const\s+([A-Za-z0-9_]+)\s+=\s+([0-9]+)$	const int $1 = $2
 Else	} else {
 ElseIf	} else if
 End Function	}
-End If	}
+End If$	}
 End Select	}
 End Sub	}
 End Type	}
 End With
 Exit Do	break
+Exit For	break
 Exit Function	return
 Exit Sub	return
-If[\s]+((?![(]).*)[\s]+Then$	If ($1) {
-If[\s]+((?![(]).*)[\s]+Then(.+)	If ($1) { $2; }
 Loop While	} while
 Private	private
 Public	public
 Select Case (.+)	switch ($1) {
-Then$	{@@@@@@@@
-\bFalse\b	false
+While\s+((?![(]).*)	while ($1) {
+\bCase\b	case
+\bConst\b	const
 \bFor\b	for
 \bIf\b	if
-\bTrue\b	true
-^'	///
+\bWend\b	}
 ^(.*)Sub (.+[)])$	$1void $2 {
 ^(.*)Type (.+)$	$1class $2 {
-^([\s]+)Do$	$1do {
-^([\s]+)Next.*	$1}
+^(\s*)Do$	$1do {
+^(\s*)Loop\s*$	$1} while (true)
+^(\s*)Next.*	$1}

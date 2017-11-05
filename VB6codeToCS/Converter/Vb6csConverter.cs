@@ -64,13 +64,16 @@ namespace VB6codeToCS.Converter
         #region Replace
         private void Prepare(StatementLine statement)
         {
-            var replacer = new Replacer("replace.b.txt");
+            var replacerA = new Replacer("replace.a.txt");
+            var replacerB = new Replacer("replace.b.txt");
 
             foreach (var stmt in statement.ListStatements())
             {
                 foreach (var line in stmt.Lines)
                 {
-                    line.Statement = replacer.Replace(line.Statement);
+                    var text = replacerA.Replace(line.Statement);
+
+                    line.Statement = replacerB.Replace(text);
                 }
             }
         }
