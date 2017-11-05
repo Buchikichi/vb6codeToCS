@@ -8,9 +8,9 @@ namespace VB6codeToCS.Converter.Statements
     {
         private static Dictionary<string, Type> dict = new Dictionary<string, Type>()
         {
-            {"^(?!.*Declare).*(?=Sub ).*$", typeof(SubStatement)},
-            {"^(?!.*Declare).*(?=Function ).*$", typeof(SubStatement)},
-            {"[\\s]*With ", typeof(WithStatement)}
+            {"^(?!.*(Declare)).*(?=Sub ).*$", typeof(SubStatement)},
+            {"^(?!.*(Declare)).*(?=Function ).*$", typeof(SubStatement)},
+            {"\\s*With .*", typeof(WithStatement)}
         };
 
         public static StatementLine Create(string line)
@@ -21,7 +21,8 @@ namespace VB6codeToCS.Converter.Statements
             {
                 if (Regex.IsMatch(line, pair.Key))
                 {
-                    //Debug.WriteLine($"IsMatch[{pair.Key}]");
+                    //Debug.WriteLine($"[{line}]");
+                    //Debug.WriteLine($"  IsMatch[{pair.Key}]");
                     result = (StatementLine)Activator.CreateInstance(pair.Value);
                     break;
                 }

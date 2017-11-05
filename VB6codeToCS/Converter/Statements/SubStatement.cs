@@ -17,7 +17,7 @@ namespace VB6codeToCS.Converter.Statements
         {
             var statement = singleLine.Statement.Trim();
 
-            Name = Regex.Replace(statement, ".*[\\s]+([A-Za-z0-9_]+)[(].*", "$1");
+            Name = Regex.Replace(statement, ".*(Sub|Function)\\s+([A-Za-z0-9_]+)[(].*", "$2");
             base.AddLine(singleLine);
         }
     }

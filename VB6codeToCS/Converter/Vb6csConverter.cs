@@ -9,7 +9,7 @@ namespace VB6codeToCS.Converter
     class Vb6csConverter
     {
         private const string Indent = "        ";
-        private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option", "^[\\s]*On Error" };
+        private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option", "^On Error Resume" };
 
         #region Load
         private bool Exclude(string line)
@@ -32,6 +32,7 @@ namespace VB6codeToCS.Converter
             var begin = 0;
             var lines = File.ReadAllLines(filename, Encoding.GetEncoding("Shift_JIS"));
             var statement = new ClassStatement();
+            var replacer = new Replacer("replace.a.txt");
 
             foreach (var line in lines)
             {
@@ -54,7 +55,9 @@ namespace VB6codeToCS.Converter
                 {
                     continue;
                 }
-                statement.Add(line.TrimEnd());
+                var replaced = replacer.Replace(line.TrimEnd());
+
+                statement.Add(replaced);
             }
             statement.EndLoad();
             return statement;
@@ -64,16 +67,13 @@ namespace VB6codeToCS.Converter
         #region Replace
         private void Prepare(StatementLine statement)
         {
-            var replacerA = new Replacer("replace.a.txt");
-            var replacerB = new Replacer("replace.b.txt");
+            var replacer = new Replacer("replace.b.txt");
 
             foreach (var stmt in statement.ListStatements())
             {
                 foreach (var line in stmt.Lines)
                 {
-                    var text = replacerA.Replace(line.Statement);
-
-                    line.Statement = replacerB.Replace(text);
+                    line.Statement = replacer.Replace(line.Statement);
                 }
             }
         }

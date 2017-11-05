@@ -53,6 +53,7 @@ namespace VB6codeToCS
                 Debug.WriteLine($"[{name}]");
                 converter.Convert(name);
             }
+            MessageBox.Show($"{list.Count} file(s) have been converted.");
         }
         #endregion
 

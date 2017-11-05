@@ -30,7 +30,12 @@ namespace VB6codeToCS.Converter.Statements
 
                 foreach (var method in MethodList)
                 {
-                    list.Add(method.Name);
+                    var name = method.Name;
+
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        list.Add(name);
+                    }
                 }
                 return list;
             }

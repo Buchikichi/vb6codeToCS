@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using VB6codeToCS.Util;
 
 namespace VB6codeToCS.Converter.Statements
 {
@@ -117,7 +118,7 @@ namespace VB6codeToCS.Converter.Statements
 
         public SingleLine(string line)
         {
-            var ix = line.IndexOf("'");
+            var ix = line.ScanSingleQuot();
 
             if (ix != -1)
             {
@@ -148,7 +149,7 @@ namespace VB6codeToCS.Converter.Statements
                 {
                     return true;
                 }
-                return Continues || Statement.EndsWith("{") || Statement.EndsWith("}");
+                return Continues || Statement.EndsWith("{") || Statement.EndsWith("}") || Statement.EndsWith(":");
             }
         }
         #endregion

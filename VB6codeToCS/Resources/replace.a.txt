@@ -1,21 +1,27 @@
  & 	 + 
+ &H	0x
  \\ 	 / 
 As Boolean	As bool
-As Byte	As byte
+As Byte\b	As byte
 As Double	As double
 As Integer	As int
 As Long	As long
 As Single	As short
 As String	As string
-Left[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring(0, $2)
-Len[(](.*?)[)]	$1.Length
-Mid[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring($2)
-\b&H\b	0x
+Case Else	default:
+Do Until (.*)	/*Do Until*/while (!($1)) {
+Do While	While
 \b.Caption\b	.Text
 \bAbs\b	Math.Abs
 \bAtn\b	Math.Atan
+\bChr[$]?[(](.*?)[)]	(char)$1
+\bComctlLib.ColumnHeader\b	ColumnHeader
 \bCos\b	Math.Cos
 \bFalse\b	false
+\bLeft[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring(0, $2)
+\bLen[(](.*?)[)]	$1.Length
+\bMid[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring($2)
+\bMod\b	%
 \bMsgBox\b	MessageBox.Show
 \bNow\b	DateTime.Now
 \bSin\b	Math.Sin
