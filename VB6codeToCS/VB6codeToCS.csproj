@@ -48,6 +48,7 @@
     <Compile Include="Converter\Statements\ControlStatement.cs" />
     <Compile Include="Converter\Replacer.cs" />
     <Compile Include="Converter\Statements\ClassStatement.cs" />
+    <Compile Include="Converter\Statements\DecisionStatement.cs" />
     <Compile Include="Converter\Statements\SubStatement.cs" />
     <Compile Include="Converter\Statements\StatementFactory.cs" />
     <Compile Include="Converter\Statements\StatementLine.cs" />

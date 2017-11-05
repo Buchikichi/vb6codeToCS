@@ -9,7 +9,7 @@ namespace VB6codeToCS.Converter
     class Vb6csConverter
     {
         private const string Indent = "        ";
-        private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option", "^On Error Resume" };
+        private readonly string[] Excludes = { "^VERSION", "^Object", "^Attribute", "^Option", "On Error Resume" };
 
         #region Load
         private bool Exclude(string line)

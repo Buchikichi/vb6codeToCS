@@ -20,6 +20,7 @@ Do While	While
 \bFalse\b	false
 \bLeft[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring(0, $2)
 \bLen[(](.*?)[)]	$1.Length
+\bMSComctlLib.Button\b	Button
 \bMid[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring($2)
 \bMod\b	%
 \bMsgBox\b	MessageBox.Show

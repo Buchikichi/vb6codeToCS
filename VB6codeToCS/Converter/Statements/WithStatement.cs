@@ -21,7 +21,7 @@ namespace VB6codeToCS.Converter.Statements
                 {
                     var replaced = line.Statement;
 
-                    replaced = Regex.Replace(replaced, "(^|\\s+|[^A-Za-z0-9])[.]", $"$1{Variable}.");
+                    replaced = Regex.Replace(replaced, "(^|\\s+|[(])[.]", $"$1{Variable}.");
                     line.Statement = replaced;
                 }
             }

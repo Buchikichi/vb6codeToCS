@@ -10,6 +10,7 @@ namespace VB6codeToCS.Converter.Statements
         {
             {"^(?!.*(Declare)).*(?=Sub ).*$", typeof(SubStatement)},
             {"^(?!.*(Declare)).*(?=Function ).*$", typeof(SubStatement)},
+            {"\\s*If .*", typeof(DecisionStatement)},
             {"\\s*With .*", typeof(WithStatement)}
         };
 
