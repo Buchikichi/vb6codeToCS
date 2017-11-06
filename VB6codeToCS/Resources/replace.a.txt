@@ -6,6 +6,7 @@ As Byte\b	As byte
 As Double	As double
 As Integer	As int
 As Long	As long
+As Object	As object
 As Single	As short
 As String	As string
 Case Else	default:
@@ -24,6 +25,7 @@ Do While	While
 \bMid[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring($2)
 \bMod\b	%
 \bMsgBox\b	MessageBox.Show
+\bNothing\b	null
 \bNow\b	DateTime.Now
 \bSin\b	Math.Sin
 \bSqr\b	Math.Sqrt
