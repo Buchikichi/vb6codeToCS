@@ -5,11 +5,12 @@
         public static int ScanSingleQuot(this string line)
         {
             var result = -1;
-            var ix = 0;
             var dq = false;
+            var match = false;
 
             foreach (var ch in line.ToCharArray())
             {
+                result++;
                 if (ch == '"')
                 {
                     dq = !dq;
@@ -21,10 +22,13 @@
                 }
                 if (ch == '\'')
                 {
-                    result = ix;
+                    match = true;
                     break;
                 }
-                ix++;
+            }
+            if (!match)
+            {
+                return -1;
             }
             return result;
         }

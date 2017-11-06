@@ -80,13 +80,16 @@ namespace VB6codeToCS.Converter
 
         private void Finish(StatementLine statement)
         {
-            var replacer = new Replacer("replace.c.txt");
+            var replacerC = new Replacer("replace.c.txt");
+            var replacerD = new Replacer("replace.d.txt");
 
             foreach (var stmt in statement.ListStatements())
             {
                 foreach (var line in stmt.Lines)
                 {
-                    line.Statement = replacer.Replace(line.Statement);
+                    var text = replacerC.Replace(line.Statement);
+
+                    line.Statement = replacerD.Replace(text);
                 }
             }
         }

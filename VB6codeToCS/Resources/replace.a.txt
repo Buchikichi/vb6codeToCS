@@ -29,4 +29,3 @@ Do While	While
 \bSqr\b	Math.Sqrt
 \bTrue\b	true
 \s*[<][>]\s*	 != 
-^'	///

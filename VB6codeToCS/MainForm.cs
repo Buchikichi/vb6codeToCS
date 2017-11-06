@@ -14,7 +14,7 @@ namespace VB6codeToCS
         {
             var lower = name.ToLower();
 
-            return lower.EndsWith(".bas") || lower.EndsWith(".cls") || lower.EndsWith(".frm");
+            return lower.EndsWith(".bas") || lower.EndsWith(".cls") || lower.EndsWith(".frm") || lower.EndsWith(".ctl");
         }
 
         private List<string> ListFiles(string[] files)
