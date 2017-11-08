@@ -12,6 +12,7 @@ As String	As string
 Case Else	default:
 Do Until (.*)	/*Do Until*/while (!($1)) {
 Do While	While
+[.]ListIndex\b	.SelectedIndex
 \b.Caption\b	.Text
 \bAbs\b	Math.Abs
 \bAtn\b	Math.Atan
@@ -30,4 +31,7 @@ Do While	While
 \bSin\b	Math.Sin
 \bSqr\b	Math.Sqrt
 \bTrue\b	true
+\bvbNo\b	DialogResult.No
+\bvbOKOnly\b	MessageBoxButtons.OK
+\bvbYesNo\b	MessageBoxButtons.YesNo
 \s*[<][>]\s*	 != 
