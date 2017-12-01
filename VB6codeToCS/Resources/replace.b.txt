@@ -1,4 +1,4 @@
-([A-Za-z0-9]+)[(][)] As ([A-Za-z0-9]+)	$1 As $2[]
+([A-Za-z0-9]+)[(][)] As ([0-9\w.]+)	$1 As $2[]
 //^(\s*)Loop\s*$	$1} while (true)
 Const\s+([A-Za-z0-9_]+)\s+=\s+(".*")$	const string $1 = $2
 Const\s+([A-Za-z0-9_]+)\s+=\s+([0-9]+)$	const int $1 = $2
@@ -27,12 +27,13 @@ While\s+((?![(]).*)	while ($1) {
 \bLoop\b	};/*Loop*/
 \bWend\b	}
 ^'	///
-^(.*)Function\s+(.+[(].*[)]) As ([A-Za-z]+)$	$1 $3 $2 {
+^(.*)Function\s+(.+[(].*[)]) As ([\w]+)$	$1 $3 $2 {
 ^(.*)Function\s+(.+[(].*[)])$	$1Empty $2 {
-^(.*)Property Get\s+(.+[(].*[)]) As ([A-Za-z]+)$	$1 $3 $2 {
+^(.*)Property Get\s+(.+[(].*[)]) As ([\w]+)$	$1 $3 $2 {
 ^(.*)Property Let\s+(.+[)])$	$1void $2 {
 ^(.*)Sub (.+[)])$	$1void $2 {
 ^(.*)Type (.+)$	$1class $2 {
 ^(\s*)Case\s+(.*[:]?)	$1case $2:
 ^(\s*)Do$	$1do {
 ^(\s*)Next.*	$1}
+_[|]_	:

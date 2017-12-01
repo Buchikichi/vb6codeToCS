@@ -1,8 +1,11 @@
  & 	 + 
  &H	0x
  \\ 	 / 
+:	;
 As Boolean	As bool
 As Byte\b	As byte
+As Currency	As decimal
+As Date	As DateTime
 As Double	As double
 As Integer	As int
 As Long	As long
@@ -16,9 +19,11 @@ Do While	While
 \b.Caption\b	.Text
 \bAbs\b	Math.Abs
 \bAtn\b	Math.Atan
+\bCase\b(.*?)([:])	case $1_|_
 \bChr[$]?[(](.*?)[)]	(char)$1
 \bComctlLib.ColumnHeader\b	ColumnHeader
 \bCos\b	Math.Cos
+\bDoEvents\b	Refresh();/*DoEvents*/
 \bFalse\b	false
 \bLeft[$]?[(](.*?)\s*,\s*(.*)[)]	$1.Substring(0, $2)
 \bLen[(](.*?)[)]	$1.Length
@@ -28,10 +33,17 @@ Do While	While
 \bMsgBox\b	MessageBox.Show
 \bNothing\b	null
 \bNow\b	DateTime.Now
+\bRTrim[(]([[\w0-9.]+)[)]	$1.TrimEnd()
 \bSin\b	Math.Sin
 \bSqr\b	Math.Sqrt
+\bTrim[$]?[(]([\w0-9.]+)[)]	$1.Trim()
 \bTrue\b	true
+\bvbBlack\b	Color.Black
+\bvbKeyReturn\b	Keys.Enter
+\bvbKeySpace\b	Keys.Space
 \bvbNo\b	DialogResult.No
 \bvbOKOnly\b	MessageBoxButtons.OK
+\bvbRed\b	Color.Red
+\bvbWhite\b	Color.White
 \bvbYesNo\b	MessageBoxButtons.YesNo
 \s*[<][>]\s*	 != 
